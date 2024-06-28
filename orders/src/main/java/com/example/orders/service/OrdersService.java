@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrdersService {
 
+    private final RestTemplate restTemplate = new RestTemplate();
     private final OrdersRepository ordersRepository;
 
     // Método para traer las órdenes
@@ -23,8 +26,20 @@ public class OrdersService {
 
     // Método para crear una orden
     public ResponseEntity<Object> createOrder(OrdersModel order) {
-        ordersRepository.save(order);
-        return new ResponseEntity<>("Orden creada", HttpStatus.CREATED);
+        Long productIds = order.getProductIds();
+        String url = "http://localhost:8080/api/products/" + productIds;
+        try {
+            ResponseEntity<Object> response = restTemplate.getForEntity(url, Object.class);
+
+            if (response.getStatusCode() == HttpStatus.OK) {
+                ordersRepository.save(order);
+                return new ResponseEntity<>("Orden creada", HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>("Producto no encontrado, orden no creada", HttpStatus.NOT_FOUND);
+            }
+        } catch (HttpClientErrorException.NotFound ex) {
+            return new ResponseEntity<>("Producto no encontrado, orden no creada", HttpStatus.NOT_FOUND);
+        }
     }
 
     // Método para actualizar una orden

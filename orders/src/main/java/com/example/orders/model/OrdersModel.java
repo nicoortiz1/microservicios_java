@@ -20,9 +20,7 @@ public class OrdersModel {
     private Long id;
 
     @NotNull(message = "Este campo no puede estar vacío")
-    @Size(min = 1, message = "La orden debe tener al menos un producto")
-    @ElementCollection // indica que esta lista se almacenará como una colección de elementos en una tabla separada
-    private List<Long> productIds; // Lista de IDs de productos que forman parte de la orden
+    private Long productIds; // Lista de IDs de productos que forman parte de la orden
 
     @NotBlank(message = "Este campo no puede estar vacío")
     private String customerName;

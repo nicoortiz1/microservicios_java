@@ -34,10 +34,10 @@ public class SecurityConfig {
                                 "/swagger.yaml"
                         ).permitAll()
                         .requestMatchers("/authenticate").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/").authenticated()
-                        .requestMatchers(HttpMethod.PUT, "/api/").authenticated()
-                        .requestMatchers(HttpMethod.DELETE, "/api/").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .cors(withDefaults())
@@ -60,7 +60,7 @@ public class SecurityConfig {
     }
 
     //metodopara cifrar y crear una contraseña especifica
-    //public static void main (String[] args) {
-    //System.out.println("pass: " + new BCryptPasswordEncoder().encode("12345678"));
-    //}
+    public static void main (String[] args) {
+    System.out.println("pass: " + new BCryptPasswordEncoder().encode("12345678"));
+    }
 }

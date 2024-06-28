@@ -41,16 +41,22 @@ public class ProductController {
     }
 
     //ctrl para actualizar producto
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> updateProduct(@PathVariable("id") Long id, @RequestBody Product updatedProduct) {
         return productService.updateProduct(id, updatedProduct);
     }
 
     //ctrl de eliminar producto
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Object> deleteProduct(@PathVariable("id") Long id) {
         return productService.deleteProduct(id);
     }
 
     //ctrl para buscar product
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> findByIdProduct(@PathVariable("id") Long id) {
         return productService.findProduct(id);
     }
